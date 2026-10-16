@@ -24,13 +24,16 @@
 .js [data-reveal="scale"] { transform: scale(.94); }
 .js [data-reveal].is-in { opacity: 1; transform: none; }
 
-/* Media mask reveal: the frame wipes open while the image settles */
-.js [data-reveal="mask"] { opacity: 1; transform: none; clip-path: inset(100% 0 0 0); transition: clip-path 1.5s var(--ease-in-out); transition-delay: var(--d, 0s); }
+/* Media mask reveal: the frame wipes open while the image settles.
+   The clip sits on the children (not the observed figure) so IntersectionObserver
+   still sees the figure while it is masked. */
+.js [data-reveal="mask"], .js [data-reveal="mask-side"] { opacity: 1; transform: none; background-color: transparent; }
+.js [data-reveal="mask"] > picture, .js [data-reveal="mask"] > .media-caption { clip-path: inset(100% 0 0 0); transition: clip-path 1.5s var(--ease-in-out); transition-delay: var(--d, 0s); }
 .js [data-reveal="mask"] img { transform: scale(1.22); transition: transform 2s var(--ease-out); transition-delay: var(--d, 0s); }
-.js [data-reveal="mask"].is-in { clip-path: inset(0 0 0 0); }
+.js [data-reveal="mask"].is-in > picture, .js [data-reveal="mask"].is-in > .media-caption { clip-path: inset(0 0 0 0); }
 .js [data-reveal="mask"].is-in img { transform: scale(1); }
-.js [data-reveal="mask-side"] { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); transition: clip-path 1.5s var(--ease-in-out); transition-delay: var(--d, 0s); }
-.js [data-reveal="mask-side"].is-in { clip-path: inset(0 0 0 0); }
+.js [data-reveal="mask-side"] > * { clip-path: inset(0 100% 0 0); transition: clip-path 1.5s var(--ease-in-out); transition-delay: var(--d, 0s); }
+.js [data-reveal="mask-side"].is-in > * { clip-path: inset(0 0 0 0); }
 
 /* Hairlines that draw in */
 .js [data-reveal="line"] { opacity: 1; transform: scaleX(0); transform-origin: left; transition: transform 1.4s var(--ease-in-out); }
@@ -70,7 +73,8 @@
 /* ---------- Reduced motion: everything visible, nothing moves ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
-  .js [data-reveal], .js [data-reveal="mask"], .js [data-reveal="mask-side"], .js [data-reveal="line"] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+  .js [data-reveal], .js [data-reveal="mask"], .js [data-reveal="mask-side"], .js [data-reveal="line"],
+  .js [data-reveal="mask"] > *, .js [data-reveal="mask-side"] > * { opacity: 1 !important; transform: none !important; clip-path: none !important; }
   .js [data-reveal="mask"] img { transform: none !important; }
   .js [data-split] .split-inner { transform: none !important; }
   .js [data-fill] .fill-word { opacity: 1 !important; }

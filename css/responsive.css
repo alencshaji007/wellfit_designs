@@ -83,6 +83,7 @@
   .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .swatch:last-child { grid-column: 1 / -1; max-width: 50%; justify-self: center; width: 100%; }
   .portfolio { grid-template-columns: minmax(0, 1fr); }
+  .portfolio .pending-panel { grid-column: auto; }
   .intro__media .media--main { width: 86%; }
   .intro__media .media--inset { width: 50%; border-width: 6px; }
   .materials__quote { position: relative; left: auto; bottom: auto; margin: -48px 16px 0; }

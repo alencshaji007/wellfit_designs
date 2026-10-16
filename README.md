@@ -1,0 +1,145 @@
+# Wellfit Designs — website
+
+A static marketing website for **Wellfit Designs**, the operational brand of
+WELL FIT SPACE DECORATION DESIGN & IMPLEMENTATION L.L.C. (Dubai, UAE). It is built with
+plain HTML, CSS and vanilla JavaScript. There are no frameworks, no build step, no backend and no third-party
+runtime dependencies.
+
+- **Design tokens**: taken from the supplied HTML reference: colours, DM Serif Display + Jost, type scale, spacing, radii and the arch motif.
+- **Content**: taken from *Wellfit Designs – Final Website Content.docx*. The *company profile PDF* was used only where it supported the DOCX.
+- **Logo**: the client-supplied file, used unchanged in identity and proportions. Only its white background was removed for the transparent variant.
+- **Motion**: smooth inertial scrolling, an arch window that opens to full-bleed on scroll, masked text and image reveals, parallax, a pinned horizontal project rail, a scroll-reactive marquee and page-to-page curtain transitions. All of it is disabled for visitors who prefer reduced motion.
+
+---
+
+## Pages
+
+| File | Page |
+| --- | --- |
+| `index.html` | Home: hero, introduction, quick facts, services, who we serve, why Wellfit, featured projects, process, materials and craftsmanship, call to action |
+| `pages/about.html` | About Us: who we are, story timeline (2020 → 2025), mission, vision, values, operating strength |
+| `pages/services.html` | Our Services: eight services with scope lists and an on-page service navigator |
+| `pages/projects.html` | Projects: filterable portfolio and a photo lightbox for projects that have genuine photographs |
+| `pages/process.html` | Our Process: six steps and an FAQ |
+| `pages/contact.html` | Contact Us: contact details and the enquiry form |
+| `404.html` | Not-found page; uses root-absolute paths (see Deployment) |
+
+## Folder structure
+
+```
+index.html, 404.html, robots.txt, sitemap.xml, site.webmanifest
+pages/                 about, services, projects, process, contact
+css/style.css          tokens, base, components, page sections
+css/animations.css     reveal states, keyframes, reduced-motion overrides
+css/responsive.css     breakpoints 1280 / 1100 / 1024 / 820 / 600 / 380
+js/animations.js       motion engine: smooth scroll, scroll loop, reveals, parallax, hero, rail, marquee
+js/navigation.js       header states, accessible mobile menu, anchors, page curtain transitions
+js/main.js             boot, back-to-top, FAQ, project filters, lightbox, enquiry form
+assets/fonts/          self-hosted WOFF2 fonts + OFL.txt
+assets/logo/           original logo, transparent logo, mark, favicons
+assets/images/         hero/, interiors/, details/, materials/, projects/  (AVIF + WebP, responsive widths)
+tools/renders/         Blender scripts that produced the illustrative renders (see ASSET-MANIFEST.md)
+```
+
+## Run locally
+
+Any static file server works. From the project folder:
+
+```bash
+python3 -m http.server 8080
+# then open http://localhost:8080/
+```
+
+or `npx http-server -p 8080`. Opening `index.html` straight from disk (`file://`) also works.
+The 404 page and the web manifest expect to be served from a web root.
+
+## Deployment
+
+Upload the folder as-is to any static host: Netlify, Vercel (static), Cloudflare Pages, GitHub Pages, S3 + CloudFront or shared hosting.
+No build command is needed and the publish directory is the project root.
+
+- **Custom domain at the root** (`https://www.wellfitdesigns.com/`): everything works as shipped, including `404.html`.
+- **Hosting in a sub-folder** (for example a GitHub Pages project URL `/<repo>/`): all pages work, but edit the
+  root-absolute links in `404.html` and the icon paths in `site.webmanifest`.
+- Canonical URLs, Open Graph URLs, `robots.txt` and `sitemap.xml` assume `https://www.wellfitdesigns.com`.
+  Update them if the live domain or protocol differs.
+- Recommended host headers: long cache lifetimes for `/assets/*`, `/css/*` and `/js/*`, plus compression (gzip or brotli) for HTML, CSS and JS.
+
+## Editing content
+
+Pages are plain HTML. The header, mobile menu and footer are repeated in every page.
+When you change navigation, contact details or the footer, update all seven HTML files.
+Text in the pages comes from the DOCX; keep any new copy factual.
+
+**Images** use `<picture>` with AVIF and WebP sources at several widths. To add or replace an image:
+
+1. Export a high-quality master (JPEG, PNG or WebP).
+2. Run `python3 tools/renders/optimize.py master.jpg assets/images/<folder> <descriptive-name>`. This needs Pillow 11 or newer, built with AVIF support.
+3. Reference the generated widths in the page's `srcset`. Keep `width` and `height` set to the master size, and write a meaningful `alt`.
+
+**Replacing an illustrative render with a real photograph**: swap the files, update the `alt`, and remove the
+`<span class="media-caption">Illustrative render</span>` label next to it.
+
+**Adding project photographs** for projects that show "Project photography to follow" (`pages/projects.html`):
+
+1. Replace the material texture in that card with the photograph.
+2. Add the gallery button markup used by the Smart Leave, HOC Creative and Strada cards. Its `data-gallery` JSON lists each photo's AVIF and WebP `srcset`, `alt`, `w`, `h` and `caption`.
+
+## Motion system
+
+All motion lives in `js/animations.js` and `css/animations.css`:
+
+| Attribute / class | Effect |
+| --- | --- |
+| `data-reveal` (`fade`, `left`, `scale`, `mask`, `mask-side`, `line`) | Reveals the element when it enters the viewport |
+| `data-split` | Words of a heading rise from a mask, staggered |
+| `data-stagger="0.08"` | Staggers the reveals of children |
+| `data-parallax="0.1"` | Element (or the image inside a `.media` frame) drifts against the scroll |
+| `data-fill` | Statement words light up as you scroll |
+| `data-progress="--var"` + `data-progress-step` | Drives a CSS variable (process line, timeline) and activates steps |
+| `data-hero`, `data-rail`, `data-marquee` | Hero arch opening, pinned horizontal rail, velocity-aware marquee |
+| `data-magnetic` | Subtle magnetic pull on buttons (fine pointers only) |
+
+How motion adapts to the device:
+
+- **Smooth scrolling** is enabled only for mouse and trackpad users (`hover: hover` and `pointer: fine`). Touch devices keep native scrolling.
+- **Pinned effects** (hero, rail) need a viewport at least 1025 px wide and 560 px tall. Smaller screens get a stacked layout.
+- **`prefers-reduced-motion: reduce`** turns off smooth scrolling, pinning, parallax, reveals, the marquee and page transitions. All content is shown immediately.
+- **Without JavaScript**, every element is visible; reveal states are scoped to `html.js`. A watchdog removes `js` if the scripts fail to start.
+
+## Enquiry form: integration point
+
+The contact form (`pages/contact.html`) validates in the browser: required fields, email format, phone pattern and a description length.
+There is no backend, so it never claims an enquiry was "sent".
+
+- **Default (no setup)**: on submit the visitor's email app opens with a pre-filled message to `projects@wellfitdesigns.com`. The status message asks them to press *Send*.
+- **With a form service**: set `data-endpoint="https://…"` on the `<form>` (Formspree, Basin, Getform, a Netlify Function or your own endpoint).
+  - The form is POSTed as `multipart/form-data` with `Accept: application/json`.
+  - A success message appears only for a 2xx response. Failures show the direct email and phone details instead.
+  - Field names: `name`, `company`, `phone`, `email`, `project_type`, `location`, `area`, `description`, `contact_method`, plus a `website` honeypot that must stay empty.
+- **Netlify Forms alternative**:
+  - Add `data-netlify="true" name="enquiry"` and a hidden `<input type="hidden" name="form-name" value="enquiry">` to the form, then set `data-endpoint="/"`.
+  - Check Netlify's current AJAX-submission guidance before launch.
+
+## Missing information and items to confirm before launch
+
+Nothing below was invented on the site. Each item is either left out or flagged.
+
+1. **Residential project names.** "Avery Davis Home" (Arabian Ranches) and "Richard Sanchez" (DAMAC Hills) appear in the DOCX and the PDF. However, these names, like the PDF testimonial names, match placeholder names that design templates commonly use. Please confirm they are real clients and that you have permission to publish them, or rename or remove the two cards.
+2. **Testimonials.** The PDF contains three testimonials (Helene Paquet, Jamie Chastain, Sebastian Bennett) with stock-style portraits, and the final DOCX does not include them. No testimonials are published. Supply genuine, approved testimonials to add a section.
+3. **Project photography.** The PDF's images for Oriana Trading & Sons, INVA Investors, Avery Davis Home and Richard Sanchez, and its cover, "who we are" and expertise pages, appear to be third-party or stock images. One carries an "EXS OFFICES" watermark, so none of them are used. Those four projects show "Project photography to follow".
+4. **Genuine photos used.** The Smart Leave, HOC Creative and Strada photographs from the PDF look like original site photos and are used for those projects only. Please confirm ownership, approval and the DOCX descriptions against the completed scope; the DOCX asks for this.
+5. **Client name.** The signage in the Smart Leave photograph reads "SMART LEAVES AGRICULTURAL LLC". The site uses the DOCX spelling, "Smart Leave", so please confirm which is correct.
+6. **Project timelines.** The FAQ answer for project duration has no typical ranges; the DOCX placeholder asks for them.
+7. **Not provided, so not shown.** Street address or map, opening hours, trade licence number, social media profiles, WhatsApp number, team members, awards and certifications.
+8. **Claims softened per the DOCX.** The PDF also says "established in 2020", "5 years experience", "state-of-the-art production facility" and lists "Architecture" expertise. The DOCX deliberately words these differently: the journey began in 2020 with JAN Interior Fit Out, and Wellfit Designs was established in 2025. The DOCX wording is used throughout.
+9. **Form backend.** None is configured; see *Enquiry form* above.
+10. **Analytics and cookie consent.** Not included. Add them if required, and update the privacy wording accordingly.
+11. **Illustrative renders.** All interior, exterior, detail and material images are original renders created for this site and are labelled "Illustrative render". Replace them with professional photography of completed Wellfit projects when available.
+
+## Browser support
+
+Current Chrome, Edge, Safari 15.4+ and Firefox. This covers AVIF/WebP via `<picture>`, CSS container query units with px fallbacks, `clip-path`,
+individual transform properties, `IntersectionObserver` and `ResizeObserver`. Older browsers fall back to static layouts.
+
+See **ASSET-MANIFEST.md** for every asset and its provenance, and **QA-REPORT.md** for the test results.

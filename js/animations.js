@@ -73,8 +73,15 @@
   };
 
   SmoothScroll.prototype._onNativeScroll = function () {
-    // keyboard, scrollbar drags, find-in-page: adopt the native position
-    if (!this.running) this.current = this.target = window.scrollY;
+    // keyboard, scrollbar drags, find-in-page, scripts: adopt the native position.
+    // While easing, our own scrollTo lands within a pixel of `current`; anything
+    // further away came from somewhere else, so stop easing and follow it.
+    var y = window.scrollY;
+    if (!this.running || Math.abs(y - this.current) > 3) {
+      this.running = false;
+      this.tween = null;
+      this.current = this.target = y;
+    }
   };
 
   SmoothScroll.prototype._start = function () {
@@ -281,7 +288,7 @@
       if (on === fx.pinned) return;
       fx.pinned = on;
       hero.classList.toggle('is-pinned', on);
-      if (!on) ['--ct', '--cr', '--cb', '--cl', '--crt', '--crb', '--zoom', '--copy-o', '--copy-y', '--st-o', '--st-y', '--shade']
+      if (!on) ['--ct', '--cr', '--cb', '--cl', '--crt', '--crb', '--zoom', '--shift-x', '--copy-o', '--copy-y', '--st-o', '--st-y', '--shade']
         .forEach(function (p) { hero.style.removeProperty(p); });
     }
 
@@ -294,6 +301,15 @@
       var r = slot.getBoundingClientRect();
       fx.inset = { t: r.top - sr.top, l: r.left - sr.left, r: sr.right - r.right, b: sr.bottom - r.bottom };
       fx.radius = r.width / 2;
+      // keep the picture's focal point (data-focal, 0..1 across the image) centred in the arch while it is small
+      var img = hero.querySelector('.hero__media img');
+      var focal = parseFloat(hero.getAttribute('data-focal')) || 0.5;
+      var iw = (img && img.naturalWidth) || 16, ih = (img && img.naturalHeight) || 9;
+      var cw = sr.width, ch = sr.height;
+      var scale = Math.max(cw / iw, ch / ih);
+      var W = iw * scale;
+      var focalX = (cw - W) * 0.42 + focal * W;
+      fx.shift = clamp((r.left - sr.left + r.width / 2) - focalX, -fx.inset.r, fx.inset.l);
     };
     fx.update = function (s) {
       if (!fx.pinned) return;
@@ -309,6 +325,7 @@
       st.setProperty('--crt', (fx.radius * k).toFixed(1) + 'px');
       st.setProperty('--crb', (24 * k).toFixed(1) + 'px');
       st.setProperty('--zoom', (1.1 - 0.1 * open).toFixed(4));
+      st.setProperty('--shift-x', ((fx.shift || 0) * k).toFixed(1) + 'px');
       var c = clamp(p / 0.26, 0, 1);
       st.setProperty('--copy-o', (1 - c).toFixed(3));
       st.setProperty('--copy-y', (-70 * easeOutCubic(clamp(p / 0.34, 0, 1))).toFixed(1) + 'px');
