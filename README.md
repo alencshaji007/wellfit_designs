@@ -12,6 +12,10 @@ runtime dependencies.
 
 ---
 
+**Dependencies**: there are no CDN or third-party requests. Fonts, scripts and images are all served from this folder.
+The 3D (Three.js) layer from the original brief was dropped at the client's request in favour of scroll-driven motion,
+so there is no `3d-scene.js` and no `assets/models/`.
+
 ## Pages
 
 | File | Page |

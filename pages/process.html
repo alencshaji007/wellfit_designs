@@ -34,7 +34,12 @@
         if (sessionStorage.getItem('wf-nav') && !matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('is-entering');
         sessionStorage.removeItem('wf-nav');
       } catch (e) {}
-      setTimeout(function () { if (!window.WF || !window.WF.booted) h.classList.remove('js', 'is-entering'); }, 3500);
+      setTimeout(function () {
+        if (window.WF && window.WF.booted) return;
+        // the scripts failed to start: fall back to a static, fully visible page
+        h.classList.remove('js', 'is-entering');
+        Array.prototype.forEach.call(d.querySelectorAll('.is-pinned'), function (el) { el.classList.remove('is-pinned'); });
+      }, 3500);
     })(document);
   </script>
   <script src="../js/animations.js" defer></script>
