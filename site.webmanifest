@@ -1,0 +1,13 @@
+{
+  "name": "Wellfit Designs",
+  "short_name": "Wellfit",
+  "description": "Interior design, fit-out and turnkey solutions for residential and commercial properties across the UAE.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#EAE6DB",
+  "theme_color": "#EAE6DB",
+  "icons": [
+    { "src": "/assets/logo/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/logo/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
