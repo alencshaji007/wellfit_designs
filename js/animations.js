@@ -260,7 +260,7 @@
         fx.top = docTop(el);
         fx.h = el.offsetHeight;
         if (!isMedia) target.style.translate = prev;
-        fx.max = isMedia ? fx.h * 0.075 : Infinity;
+        fx.max = isMedia ? fx.h * 0.075 : fx.h * 0.1;
       };
       fx.update = function (s) {
         if (WF.reduced) { target.style.translate = ''; return; }
@@ -282,7 +282,7 @@
     if (!hero) return;
     var sticky = hero.querySelector('.hero__sticky');
     var slot = hero.querySelector('[data-hero-slot]');
-    var fx = { pinned: false };
+    var fx = { pinned: hero.classList.contains('is-pinned') }; // may be pre-set inline to avoid a layout shift
 
     function setPinned(on) {
       if (on === fx.pinned) return;

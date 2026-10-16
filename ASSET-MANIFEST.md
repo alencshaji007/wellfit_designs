@@ -17,8 +17,9 @@ No asset is presented as something it is not:
 | File | Use | Provenance |
 | --- | --- | --- |
 | `wellfit-designs-logo-original.jpg` | Archive copy, not referenced by pages | Client-supplied logo image, byte-identical (SHA-256 `b4d727dd…57763`) |
-| `wellfit-designs-logo.png`, `.webp` | Header and footer | Derived from the original: the white background was converted to transparency and the margins trimmed. Colours, shapes and proportions are unchanged (1128 × 718, aspect 1.571). |
-| `wellfit-designs-mark.png` | Page-transition curtain | Crop of the manta mark from the derived logo; no redrawing |
+| `wellfit-designs-logo.png`, `.webp` | Master transparent logo (structured-data `logo` URL) | Derived from the original: the white background was converted to transparency and the margins trimmed. Colours, shapes and proportions are unchanged (1128 × 718, aspect 1.571). |
+| `wellfit-designs-logo-480.webp`, `-480.png` | Header and footer | Same transparent logo resized to 480 px wide (proportions kept) for fast loading |
+| `wellfit-designs-mark-256.png` | Page-transition curtain | Crop of the manta mark from the derived logo, 256 px wide; no redrawing |
 | `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Browser and app icons | The mark centred on a square canvas (transparent, or brand sand `#EAE6DB` for the Apple touch icon) |
 
 ## Fonts — `assets/fonts/`

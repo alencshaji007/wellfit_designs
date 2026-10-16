@@ -48,6 +48,28 @@
     });
   }
 
+  /* ---------- Services page: highlight the section in view ---------- */
+  function setupScrollSpy() {
+    var links = document.querySelectorAll('[data-spy]');
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('data-spy')] = a; });
+    var visible = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { visible[en.target.id] = en.isIntersecting ? en.intersectionRatio : 0; });
+      var best = null;
+      var bestRatio = 0;
+      Object.keys(visible).forEach(function (id) { if (visible[id] > bestRatio) { bestRatio = visible[id]; best = id; } });
+      if (!best) return;
+      links.forEach(function (a) {
+        var on = a.getAttribute('data-spy') === best;
+        a.classList.toggle('is-active', on);
+        if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-30% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
+    Object.keys(byId).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  }
+
   /* ---------- Project filters ---------- */
   function setupFilters() {
     var group = document.querySelector('[data-filters]');
@@ -299,10 +321,12 @@
 
   /* ---------- Boot ---------- */
   var boot = function () {
+    WF.booted = true;
     if (WF.initMotion) WF.initMotion();
     if (WF.initNavigation) WF.initNavigation();
     setupToTop();
     setupFaq();
+    setupScrollSpy();
     setupFilters();
     setupLightbox();
     setupForm();
