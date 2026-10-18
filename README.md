@@ -63,6 +63,10 @@ Upload the folder as-is to any static host: Netlify, Vercel (static), Cloudflare
 No build command is needed and the publish directory is the project root.
 
 - **Custom domain at the root** (`https://www.wellfitdesigns.com/`): everything works as shipped, including `404.html`.
+- **Hosts with "pretty URLs"**: Cloudflare Pages always does this, as does Vercel with `cleanUrls`. These hosts redirect `/pages/about.html` to `/pages/about`.
+  - The site still works, because links are followed through the redirect.
+  - For clean SEO, either turn the feature off where the host allows it, or change the canonical URLs, `og:url` values and `sitemap.xml` entries to the extensionless form.
+  - Netlify, GitHub Pages, S3 and shared hosting serve the `.html` URLs directly.
 - **Hosting in a sub-folder** (for example a GitHub Pages project URL `/<repo>/`): all pages work, but edit the
   root-absolute links in `404.html` and the icon paths in `site.webmanifest`.
 - Canonical URLs, Open Graph URLs, `robots.txt` and `sitemap.xml` assume `https://www.wellfitdesigns.com`.

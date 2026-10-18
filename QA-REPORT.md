@@ -79,7 +79,7 @@ On each run the page is scrolled top to bottom, then checked as follows:
 
 ## 4. Links, anchors and assets
 
-`774` internal references checked (`href`, `src`, `srcset`, `imagesrcset`, gallery JSON):
+`781` internal references checked (`href`, `src`, `srcset`, `imagesrcset`, gallery JSON):
 
 - **0 missing files**
 - **0 broken anchors**
@@ -174,7 +174,28 @@ Each finding was meant to be challenged by verifiers instructed to refute it.
 - missing "Illustrative render" labels (intro inset, hover previews, share image)
 - an "Our Story" heading that over-reached the DOCX wording
 
-**Second review.** See the results appended below.
+**Second review.** This covered CSS and responsiveness, SEO and hosting, brand compliance, and a re-check of the fixes. It also hit the usage limit: only the SEO reviewer completed, and its 7 findings were triaged by hand. The 6 that reproduced were fixed:
+
+- **Lightbox overflow (confirmed):** a tall photo rendered 1,533 px high in a 900 px window and covered the controls. It now fits the stage on desktop and phone.
+- **`sizes` and object-fit:** the `sizes` values did not account for `object-fit: cover` cropping, where landscape renders sit in portrait or arch frames, or the 16:9 hero and closing banner cover taller boxes. They are now calculated per frame, so images are no longer upscaled. The hero preload uses the same `sizes`: one download per viewport (1920 w on desktop, 800 w on phone).
+- **Title and description length:** one title was over 60 characters and three descriptions over 160. All are shortened now (titles 34–57, descriptions 141–154).
+- **Favicon:** only a 32 px PNG was declared and `/favicon.ico` returned 404. A multi-size `favicon.ico` (16/32/48) is now at the root.
+- **"Pretty URL" hosts:** README now explains that Cloudflare Pages, and Vercel with `cleanUrls`, redirect `.html` URLs, and how to adapt the canonical URLs.
+
+The remaining finding, that other `sizes` values over-fetch slightly, was minor and is covered by the per-frame calculation.
+
+The CSS, brand and fix-re-check reviewers could not run because of the usage limit. Their areas were checked directly instead:
+
+- the browser matrix (42 runs)
+- the phone screenshots reviewed in this session
+- the button-contrast audit
+- the 23-check regression suite
+
+**Phone feedback from the client**, fixed in commit `9e09173`:
+
+- the image now comes first on phones
+- the open menu has an explicit **Close** button
+- every button label is readable, including in the mobile menu
 
 ## 8. Known limitations
 
