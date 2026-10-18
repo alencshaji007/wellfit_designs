@@ -40,7 +40,9 @@
     var self = this;
     var cancel = function () { if (self.tween) { self.tween = null; self.running = false; self.current = self.target = window.scrollY; } };
     window.addEventListener('touchstart', cancel, { passive: true });
-    window.addEventListener('keydown', cancel);
+    window.addEventListener('keydown', function (e) {
+      if (/^(Arrow(Up|Down)|Page(Up|Down)|Home|End| |Spacebar)$/.test(e.key)) cancel();
+    });
     window.addEventListener('mousedown', cancel);
     if (!this.enabled) return;
     root.classList.add('has-smooth-scroll');
@@ -61,7 +63,7 @@
   };
 
   SmoothScroll.prototype._onWheel = function (e) {
-    if (this.locked || e.ctrlKey || e.metaKey || e.defaultPrevented) return;
+    if (WF.reduced || this.locked || e.ctrlKey || e.metaKey || e.defaultPrevented) return;
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;          // let horizontal gestures through
     if (this._scrollableParent(e.target, e.deltaY)) return;        // nested scroll areas scroll natively
     e.preventDefault();
@@ -240,6 +242,16 @@
       if (el.hasAttribute('data-reveal-manual')) return;
       io.observe(el);
     });
+    document.addEventListener('focusin', function (e) {
+      var node = e.target;
+      while (node && node !== document.body) {
+        if (node.matches && node.matches('[data-reveal], [data-split]') && !node.classList.contains('is-in')) {
+          node.classList.add('is-in');
+          io.unobserve(node);
+        }
+        node = node.parentNode;
+      }
+    });
   }
 
   /* ------------------------------------------------------------------------
@@ -334,6 +346,12 @@
       st.setProperty('--st-o', t.toFixed(3));
       st.setProperty('--st-y', ((1 - t) * 48).toFixed(1) + 'px');
     };
+    hero.addEventListener('focusin', function (e) {
+      if (!fx.pinned || !e.target.closest('.hero__copy')) return;
+      if (window.scrollY > fx.top + 4) {
+        if (WF.scroll) WF.scroll.scrollTo(fx.top, { duration: 500 }); else window.scrollTo(0, fx.top);
+      }
+    });
     WF.addEffect(fx);
   }
 
@@ -429,13 +447,25 @@
       var track = m.querySelector('.marquee__track');
       var group = track && track.querySelector('.marquee__group');
       if (!track || !group || WF.reduced) return;
-      var fx = { always: true, x: 0, dir: -1, visible: true, width: 0 };
+      var fx = { always: true, x: 0, dir: -1, visible: true, width: 0, paused: false, hover: false };
+      var toggle = m.querySelector('.marquee__toggle');
+      if (toggle) {
+        toggle.hidden = false;
+        toggle.addEventListener('click', function () {
+          fx.paused = !fx.paused;
+          toggle.setAttribute('aria-pressed', fx.paused ? 'true' : 'false');
+          toggle.setAttribute('aria-label', fx.paused ? 'Play moving text' : 'Pause moving text');
+          m.classList.toggle('is-paused', fx.paused);
+        });
+      }
+      m.addEventListener('pointerenter', function () { fx.hover = true; });
+      m.addEventListener('pointerleave', function () { fx.hover = false; });
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (e) { fx.visible = e[0].isIntersecting; }).observe(m);
       }
       fx.measure = function () { fx.width = group.getBoundingClientRect().width; };
       fx.update = function (s) {
-        if (!fx.visible || !fx.width) return;
+        if (!fx.visible || !fx.width || fx.paused || fx.hover) return;
         if (Math.abs(s.velocity) > 0.4) fx.dir = s.velocity > 0 ? -1 : 1;
         var speed = 0.045 + Math.min(0.9, Math.abs(s.velocity) * 0.035);
         fx.x += fx.dir * speed * s.dt;
@@ -490,11 +520,13 @@
           preview.classList.add('is-visible');
         });
       });
-      list.addEventListener('pointerleave', function () {
+      var hidePreview = function () {
         pos.active = false;
         preview.classList.remove('is-visible');
         imgs.forEach(function (im) { im.classList.remove('is-active'); });
-      });
+      };
+      list.addEventListener('pointerleave', hidePreview);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && pos.active) hidePreview(); });
     }
   }
 

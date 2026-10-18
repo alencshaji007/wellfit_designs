@@ -33,15 +33,21 @@
       summary.addEventListener('click', function (e) {
         if (prefersReduced()) return;
         e.preventDefault();
+        var closing = !!item.dataset.closing;
+        var opening = item.open && !closing;
+        // start any interrupted animation from where it visually is
+        var from = anim ? panel.getBoundingClientRect().height : null;
         if (anim) anim.cancel();
-        if (!item.open) {
+        item.dataset.closing = '';
+        if (!item.open || closing) {
           item.open = true;
           var h = panel.scrollHeight;
-          anim = panel.animate([{ height: '0px', opacity: 0 }, { height: h + 'px', opacity: 1 }], { duration: 520, easing: 'cubic-bezier(.16,1,.3,1)' });
-        } else {
-          var start = panel.offsetHeight;
+          anim = panel.animate([{ height: (from === null ? 0 : from) + 'px', opacity: from === null ? 0 : 1 }, { height: h + 'px', opacity: 1 }], { duration: 520, easing: 'cubic-bezier(.16,1,.3,1)' });
+        } else if (opening) {
+          var start = from === null ? panel.offsetHeight : from;
           anim = panel.animate([{ height: start + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 420, easing: 'cubic-bezier(.65,0,.35,1)' });
-          anim.onfinish = function () { item.open = false; };
+          item.dataset.closing = '1';
+          anim.onfinish = function () { item.open = false; item.dataset.closing = ''; };
         }
         anim.addEventListener('finish', function () { anim = null; if (WF.refresh) WF.refresh(); });
       });
@@ -117,6 +123,7 @@
     var items = [];
     var index = 0;
     var opener = null;
+    var hideTimer = null;
 
     var render = function () {
       var it = items[index];
@@ -151,6 +158,7 @@
       opener = btn;
       index = 0;
       title.textContent = btn.getAttribute('data-title') || '';
+      clearTimeout(hideTimer);
       render();
       box.hidden = false;
       requestAnimationFrame(function () { box.classList.add('is-open'); });
@@ -162,7 +170,7 @@
       box.classList.remove('is-open');
       document.body.style.overflow = '';
       if (WF.scroll) WF.scroll.unlock();
-      setTimeout(function () { box.hidden = true; stage.innerHTML = ''; }, prefersReduced() ? 0 : 500);
+      hideTimer = setTimeout(function () { box.hidden = true; stage.innerHTML = ''; }, prefersReduced() ? 0 : 500);
       if (opener) opener.focus({ preventScroll: true });
     };
     var go = function (d) { index = (index + d + items.length) % items.length; render(); };
@@ -313,8 +321,16 @@
         d.description
       ].filter(function (l) { return l !== null; });
       var subject = 'Project enquiry – ' + d.type + ' – ' + d.name;
-      var href = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
-      show('info', '<strong>Almost done.</strong> Your email app should open with this enquiry pre-filled — please press <em>Send</em> there to complete it. If nothing opened, email <a href="mailto:' + mailTo + '">' + mailTo + '</a> or call <a href="tel:+971521424500">+971 52 142 4500</a>.');
+      var build = function (body) { return 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body); };
+      var href = build(lines.join('\n'));
+      var truncated = false;
+      // some desktop mail clients reject mailto links longer than ~2,000 characters
+      while (href.length > 1900 && lines[lines.length - 1].length > 40) {
+        truncated = true;
+        lines[lines.length - 1] = lines[lines.length - 1].slice(0, Math.floor(lines[lines.length - 1].length * 0.8)) + '…';
+        href = build(lines.concat(['', '(Description shortened — please paste the full text into this email.)']).join('\n'));
+      }
+      show('info', '<strong>Almost done.</strong> Your email app should open with this enquiry pre-filled — please press <em>Send</em> there to complete it.' + (truncated ? ' Your description was long, so it has been shortened in the email: please paste the full text before sending.' : '') + ' If nothing opened, email <a href="mailto:' + mailTo + '">' + mailTo + '</a> or call <a href="tel:+971521424500">+971 52 142 4500</a>.');
       window.location.href = href;
     });
   }

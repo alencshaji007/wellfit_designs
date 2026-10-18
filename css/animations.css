@@ -48,7 +48,7 @@
 
 /* Scroll-linked word fill for statements */
 .fill-word { transition: opacity .4s linear, color .4s linear; }
-.js [data-fill] .fill-word { opacity: .16; }
+.js [data-fill] .fill-word { opacity: .3; }
 .js [data-fill] .fill-word.is-lit { opacity: 1; }
 
 /* ---------- Lazy images fade in once decoded ---------- */
