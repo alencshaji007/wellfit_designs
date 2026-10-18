@@ -46,11 +46,12 @@ On each run the page is scrolled top to bottom, then checked as follows:
 | Duplicate `id`s | **none** |
 | Interactive targets smaller than 40 px (excluding inline text links) | **none** |
 
-## 3. Interaction suite (46/46 passed) and regression suite (15/15 passed)
+## 3. Interaction suite (46/46 passed) and regression suite (23/23 passed)
 
 **Navigation and menu**
 
-- Mobile menu: opens, moves focus inside, traps Tab, Escape closes, the toggle button closes, background is `inert`, links navigate.
+- Mobile menu: opens and moves focus to its own visible **Close** button. It traps Tab; Close, Escape and links all close it, with focus returning to the menu toggle. The background is `inert` while it is open.
+- Phone layout: on the home page and every inner page, the hero image comes before the headline, and the headline still starts within the first screen (390 × 844).
 - Page transitions: the curtain covers on leave and clears on arrival; modifier-clicks and new tabs are untouched; bfcache restore is clean.
 - Header turns solid on scroll, hides on scroll-down, and reappears on scroll-up or keyboard focus.
 - In-page anchors land below the fixed header. They update the hash without stacking duplicate history entries, and move focus to the target.
@@ -78,7 +79,7 @@ On each run the page is scrolled top to bottom, then checked as follows:
 
 ## 4. Links, anchors and assets
 
-`753` internal references checked (`href`, `src`, `srcset`, `imagesrcset`, gallery JSON):
+`774` internal references checked (`href`, `src`, `srcset`, `imagesrcset`, gallery JSON):
 
 - **0 missing files**
 - **0 broken anchors**
@@ -118,6 +119,7 @@ Real-world numbers depend on hosting, CDN and connection. Enable compression and
 
 - **Structure**: semantic landmarks (`header`, `nav`, `main`, `footer`), one `h1` per page with ordered headings, and a skip link.
 - **Visible focus**: on all controls, including the gallery buttons (inset ring) and the marquee pause button.
+- **Buttons**: every button on every page was measured at phone width, both normal and in the tapped/hover state, including the one in the mobile menu. All 18 are at least 6.9:1. Button text sits on its own layer above the hover fill.
 - **Contrast** (WCAG 2.x ratios on the actual backgrounds):
 
   | Pair | Ratio |

@@ -38,6 +38,9 @@
   .intro__media { max-width: 640px; }
   .page-hero__grid { align-items: start; }
   .page-hero .media { max-width: 560px; max-height: none; }
+  /* phones and tablets: the picture leads, the copy follows */
+  .hero__slot { order: -1; }
+  .page-hero__grid > .media { order: -1; }
   .portfolio { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cards-3 { grid-template-columns: minmax(0, 1fr); }
   .step { grid-template-columns: 96px minmax(0, 1fr); }
@@ -66,8 +69,10 @@
   .brand img { height: 48px; }
   .site-header.is-scrolled .brand img { height: 44px; }
   .menu-toggle { width: 48px; height: 48px; }
-  .hero__sticky { padding-top: calc(var(--header-h) + 20px); }
-  .hero__slot { aspect-ratio: 4 / 4.8; }
+  .hero__slot { aspect-ratio: auto; height: min(52svh, 440px); min-height: 280px; max-height: none; }
+  .hero__sticky { padding-top: calc(var(--header-h) + 12px); }
+  .page-hero { padding-top: calc(var(--header-h) + 16px); }
+  .page-hero .media { aspect-ratio: auto; height: min(50svh, 420px); min-height: 260px; width: 100%; }
   .btn { width: 100%; }
   .btn-row { flex-direction: column; align-items: stretch; }
   .header-cta .btn, .filters .btn { width: auto; }

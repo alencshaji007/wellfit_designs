@@ -42,8 +42,9 @@
       });
     };
 
+    var closeBtn = menu.querySelector('[data-menu-close]');
     var focusables = function () {
-      return [toggle].concat(Array.prototype.slice.call(menu.querySelectorAll('a[href], button:not([disabled])')));
+      return Array.prototype.slice.call(menu.querySelectorAll('a[href], button:not([disabled])'));
     };
     var open = function () {
       lastFocus = document.activeElement;
@@ -55,7 +56,7 @@
       toggle.setAttribute('aria-label', 'Close menu');
       document.body.style.overflow = 'hidden';
       if (WF.scroll) WF.scroll.lock();
-      var first = menu.querySelector('a[href]');
+      var first = closeBtn || menu.querySelector('a[href]');
       if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 350);
     };
     var close = function (restoreFocus) {
@@ -70,6 +71,7 @@
       if (restoreFocus !== false && lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
     };
     menu.setAttribute('inert', '');
+    if (closeBtn) closeBtn.addEventListener('click', function () { close(); });
     toggle.addEventListener('click', function () {
       if (menu.classList.contains('is-open')) close(); else open();
     });
