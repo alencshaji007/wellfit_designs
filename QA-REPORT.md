@@ -107,7 +107,7 @@ Measures that keep these numbers low:
 
 - **Images**: AVIF with WebP fallback, served at five widths. Explicit `width`/`height` and lazy loading below the fold. The hero is preloaded and has `fetchpriority="high"`.
 - **Fonts**: two self-hosted WOFF2 files, preloaded, with `font-display: swap`.
-- **Scripts**: about 30 KB of unminified JavaScript, all deferred. One `requestAnimationFrame` loop drives every scroll effect; layout is measured on resize, not each frame.
+- **Scripts**: about 51 KB of unminified JavaScript (about 13 KB gzipped), all deferred. One `requestAnimationFrame` loop drives every scroll effect; layout is measured on resize, not each frame.
 - **Layout stability**:
   - The pinned hero is applied before first paint, so CLS is 0.
   - Reveal states start at 0.1 % opacity rather than 0, so above-the-fold text counts for LCP without changing the look.
