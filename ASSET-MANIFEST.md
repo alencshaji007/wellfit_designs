@@ -67,6 +67,17 @@ Remove all three for any image that is replaced with a photograph of the complet
 Projects: Smart Leaves, HOC Creative, Strada, Oriana Trading & Sons, INVA Investors, Eleonora Apartment and Richard Sanchez.
 Eleonora Apartment replaces the former Avery Davis Home card, which had no images (confirmed by the client).
 
+### Company profile brochure
+
+| File | Source | Used on |
+| --- | --- | --- |
+| `assets/brochure/wellfit-designs-company-profile.pdf` | Client-supplied *WELLFIT_DESIGNS_COMPANY_PROFILE_1.pdf* (17 pages, 2.3 MB), unchanged | Download links: Home (Company Profile section), footer Quick Links, Contact page |
+| `home/brochure-cover` | Page 1 of that PDF rendered at 2000 × 1125, then resized and encoded | Home – Company Profile section (decorative cover) |
+
+### Social icons
+
+The WhatsApp, Instagram, Facebook and LinkedIn glyphs are inline SVG paths from Bootstrap Icons 1.11.3 (MIT licence).
+
 ### Supplied but not used
 
 | File | Reason |

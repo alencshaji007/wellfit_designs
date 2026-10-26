@@ -25,7 +25,7 @@ so there is no `3d-scene.js` and no `assets/models/`.
 | `pages/services.html` | Our Services: eight services with scope lists and an on-page service navigator |
 | `pages/projects.html` | Projects: filterable portfolio and a photo lightbox for projects that have genuine photographs |
 | `pages/process.html` | Our Process: six steps and an FAQ |
-| `pages/contact.html` | Contact Us: contact details and the enquiry form |
+| `pages/contact.html` | Contact Us: contact details, call / email quick actions, social links and the brochure download |
 | `404.html` | Not-found page; uses root-absolute paths (see Deployment) |
 
 ## Folder structure
@@ -38,9 +38,10 @@ css/animations.css     reveal states, keyframes, reduced-motion overrides
 css/responsive.css     breakpoints 1280 / 1100 / 1024 / 820 / 600 / 380
 js/animations.js       motion engine: smooth scroll, scroll loop, reveals, parallax, hero, rail, marquee
 js/navigation.js       header states, accessible mobile menu, anchors, page curtain transitions
-js/main.js             boot, back-to-top, FAQ, project filters, lightbox, enquiry form
+js/main.js             boot, back-to-top, FAQ, project filters, lightbox, social-link placeholders
 assets/fonts/          self-hosted WOFF2 fonts + OFL.txt
 assets/logo/           original logo, transparent logo, mark, favicons
+assets/brochure/       company profile PDF (downloadable)
 assets/images/         home/, services/, process/, projects/ (client images); hero/, interiors/, details/, materials/ (renders)  (AVIF + WebP, responsive widths)
 tools/renders/         Blender scripts that produced the illustrative renders (see ASSET-MANIFEST.md)
 ```
@@ -129,19 +130,29 @@ How motion adapts to the device:
 - **`prefers-reduced-motion: reduce`** turns off smooth scrolling, pinning, parallax, reveals, the marquee and page transitions. All content is shown immediately.
 - **Without JavaScript**, every element is visible; reveal states are scoped to `html.js`. A watchdog removes `js` if the scripts fail to start.
 
-## Enquiry form: integration point
+## Contact page
 
-The contact form (`pages/contact.html`) validates in the browser: required fields, email format, phone pattern and a description length.
-There is no backend, so it never claims an enquiry was "sent".
+The contact page has no form. Visitors call (`tel:` link) or email; the email button opens the visitor's email app with a
+short template (project type, location, area, description, preferred contact method) addressed to `projects@wellfitdesigns.com`.
+The "Request a Quote" buttons across the site point to `pages/contact.html#enquiry`, the contact section.
 
-- **Default (no setup)**: on submit the visitor's email app opens with a pre-filled message to `projects@wellfitdesigns.com`. The status message asks them to press *Send*.
-- **With a form service**: set `data-endpoint="https://…"` on the `<form>` (Formspree, Basin, Getform, a Netlify Function or your own endpoint).
-  - The form is POSTed as `multipart/form-data` with `Accept: application/json`.
-  - A success message appears only for a 2xx response. Failures show the direct email and phone details instead.
-  - Field names: `name`, `company`, `phone`, `email`, `project_type`, `location`, `area`, `description`, `contact_method`, plus a `website` honeypot that must stay empty.
-- **Netlify Forms alternative**:
-  - Add `data-netlify="true" name="enquiry"` and a hidden `<input type="hidden" name="form-name" value="enquiry">` to the form, then set `data-endpoint="/"`.
-  - Check Netlify's current AJAX-submission guidance before launch.
+## Social media links
+
+The footer of every page and the contact page show WhatsApp, Instagram, Facebook and LinkedIn icons. Until real URLs are added,
+each link is `href="#"`; `js/main.js` marks those as disabled (`aria-disabled="true"`) and stops them jumping to the top of the page.
+
+To add a profile, search the HTML files for `data-social="instagram"` (or `whatsapp`, `facebook`, `linkedin`) and replace `href="#"`
+with the URL, for example `href="https://www.instagram.com/wellfitdesigns/"`. Each icon appears twice on `pages/contact.html` and
+once on every other page (`index.html`, `404.html` and the files in `pages/`). For WhatsApp use `https://wa.me/971XXXXXXXXX`
+(country code and number, no `+` or spaces). Add `target="_blank" rel="noopener"` if the profiles should open in a new tab.
+
+## Company profile brochure
+
+`assets/brochure/wellfit-designs-company-profile.pdf` is offered for download on the home page (a "Company Profile" section
+before the closing call to action), in the footer Quick Links on every page, and on the contact page. Links use the `download`
+attribute, so the file is saved as `Wellfit-Designs-Company-Profile.pdf`; "View online" opens it in a new tab.
+To update the brochure, replace the PDF with the same file name, and update the "PDF · 2.3 MB · 17 pages" line in `index.html`
+and the cover image (`assets/images/home/brochure-cover-*`, rendered from page 1).
 
 ## Missing information and items to confirm before launch
 
@@ -155,7 +166,7 @@ Nothing below was invented on the site. Each item is either left out or flagged.
 6. **Project timelines.** The FAQ answer for project duration has no typical ranges; the DOCX placeholder asks for them.
 7. **Not provided, so not shown.** Street address or map, opening hours, trade licence number, social media profiles, WhatsApp number, team members, awards and certifications.
 8. **Claims softened per the DOCX.** The PDF also says "established in 2020", "5 years experience", "state-of-the-art production facility" and lists "Architecture" expertise. The DOCX deliberately words these differently: the journey began in 2020 with JAN Interior Fit Out, and Wellfit Designs was established in 2025. The DOCX wording is used throughout.
-9. **Form backend.** None is configured; see *Enquiry form* above.
+9. **Social media links.** The WhatsApp, Instagram, Facebook and LinkedIn icons are placeholders until the profile URLs are supplied; see *Social media links* above.
 10. **Analytics and cookie consent.** Not included. Add them if required, and update the privacy wording accordingly.
 11. **Illustrative renders.** The Home, Services, Process and Projects images are client-supplied. The About and Contact images and the material swatches are still original renders labelled "Illustrative render"; replace them when client images are available.
 

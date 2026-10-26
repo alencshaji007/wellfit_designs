@@ -28,7 +28,7 @@
 }
 
 @media (max-width: 1024px) {
-  .hero__grid, .intro__grid, .why__grid, .materials__grid, .contact__grid, .page-hero__grid, .split { grid-template-columns: minmax(0, 1fr); }
+  .hero__grid, .intro__grid, .why__grid, .materials__grid, .contact__grid, .brochure__grid, .page-hero__grid, .split { grid-template-columns: minmax(0, 1fr); }
   .hero__sticky { padding-bottom: 40px; }
   .hero__slot { height: auto; min-height: 0; aspect-ratio: 4 / 4.4; max-height: 78vh; width: 100%; max-width: 640px; }
   .hero__scroll { display: none; }
@@ -95,8 +95,11 @@
   .step { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .step__media { grid-column: auto; }
   .faq__a-inner { padding-right: 0; }
-  .form-grid { grid-template-columns: minmax(0, 1fr); }
   .contact-list li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .contact-panel { padding: 22px 18px; }
+  .contact-action { gap: 12px; padding: 14px; }
+  .contact-action__icon { width: 40px; height: 40px; }
+  .contact-action__value { font-size: .95rem; }
   .footer__top { grid-template-columns: minmax(0, 1fr); }
   .footer__bottom { flex-direction: column; }
   .pending-panel { grid-template-columns: minmax(0, 1fr); }

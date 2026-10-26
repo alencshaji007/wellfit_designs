@@ -1,7 +1,7 @@
 /* ==========================================================================
    Wellfit Designs — page features
    Boots the motion engine and navigation, then wires up: back-to-top,
-   FAQ accordion, project filters, the project lightbox and the enquiry form.
+   FAQ accordion, project filters, the project lightbox and the social-link placeholders.
    ========================================================================== */
 (function () {
   'use strict';
@@ -204,134 +204,11 @@
     });
   }
 
-  /* ---------- Enquiry form: validation + delivery ---------- */
-  function setupForm() {
-    var form = document.querySelector('[data-enquiry-form]');
-    if (!form) return;
-    form.setAttribute('novalidate', '');
-    var status = form.querySelector('.form-status');
-    var submit = form.querySelector('[type="submit"]');
-    var endpoint = (form.getAttribute('data-endpoint') || '').trim();
-    var mailTo = form.getAttribute('data-email') || 'projects@wellfitdesigns.com';
-    var fields = Array.prototype.slice.call(form.querySelectorAll('input, select, textarea')).filter(function (f) {
-      return f.name && f.type !== 'hidden' && !f.closest('[aria-hidden="true"]');
-    });
-
-    var errorFor = function (field) {
-      var id = field.getAttribute('aria-describedby');
-      if (!id) return null;
-      var ids = id.split(/\s+/);
-      for (var i = 0; i < ids.length; i++) {
-        var el = document.getElementById(ids[i]);
-        if (el && el.classList.contains('field__error')) return el;
-      }
-      return null;
-    };
-    var messageFor = function (field) {
-      var v = field.validity;
-      var label = field.getAttribute('data-label') || 'This field';
-      if (v.valueMissing) return field.type === 'radio' ? 'Please choose an option.' : label + ' is required.';
-      if (v.typeMismatch && field.type === 'email') return 'Please enter a valid email address, for example name@company.com.';
-      if (v.patternMismatch && field.type === 'tel') return 'Please enter a valid phone number using digits, spaces, + or -.';
-      if (v.tooShort) return label + ' should be at least ' + field.minLength + ' characters.';
-      if (v.tooLong) return label + ' should be at most ' + field.maxLength + ' characters.';
-      return field.validationMessage || 'Please check this field.';
-    };
-    var validate = function (field) {
-      if (field.type === 'radio') {
-        var groupFields = form.querySelectorAll('input[name="' + field.name + '"]');
-        var ok = Array.prototype.some.call(groupFields, function (r) { return r.checked; }) || !groupFields[0].required;
-        var err = document.getElementById(field.name + '-error');
-        groupFields.forEach(function (r) { r.setAttribute('aria-invalid', ok ? 'false' : 'true'); });
-        if (err) err.textContent = ok ? '' : 'Please choose an option.';
-        return ok;
-      }
-      if (field.value && typeof field.value === 'string' && field.tagName !== 'SELECT') field.value = field.value.replace(/^\s+/, '');
-      var valid = field.checkValidity();
-      field.setAttribute('aria-invalid', valid ? 'false' : 'true');
-      var err2 = errorFor(field);
-      if (err2) err2.textContent = valid ? '' : messageFor(field);
-      return valid;
-    };
-    var show = function (kind, html) {
-      status.className = 'form-status form-status--' + kind + ' is-visible';
-      status.innerHTML = html;
-    };
-
-    fields.forEach(function (f) {
-      f.addEventListener('blur', function () { if (f.value || f.dataset.touched) validate(f); f.dataset.touched = '1'; });
-      f.addEventListener('input', function () { if (f.getAttribute('aria-invalid') === 'true') validate(f); });
-      f.addEventListener('change', function () { if (f.type === 'radio' || f.tagName === 'SELECT') validate(f); });
-    });
-
-    var collect = function () {
-      var fd = new FormData(form);
-      var get = function (k) { return (fd.get(k) || '').toString().trim(); };
-      return {
-        name: get('name'), company: get('company'), phone: get('phone'), email: get('email'),
-        type: get('project_type'), location: get('location'), area: get('area'),
-        description: get('description'), contact: get('contact_method'), trap: get('website')
-      };
-    };
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var firstBad = null;
-      var seen = {};
-      fields.forEach(function (f) {
-        if (f.type === 'radio') { if (seen[f.name]) return; seen[f.name] = true; }
-        if (!validate(f) && !firstBad) firstBad = f;
-      });
-      if (firstBad) {
-        show('error', 'Please check the highlighted fields and try again.');
-        firstBad.focus();
-        return;
-      }
-      var d = collect();
-      if (d.trap) return; // honeypot filled: silently ignore automated submissions
-
-      if (endpoint) {
-        submit.disabled = true;
-        show('info', 'Sending your enquiry…');
-        fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
-          .then(function (res) {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            show('success', '<strong>Thank you.</strong> Your enquiry has been received and our team will be in touch to discuss the next steps.');
-            form.reset();
-          })
-          .catch(function () {
-            show('error', 'Sorry, your enquiry could not be sent just now. Please email <a href="mailto:' + mailTo + '">' + mailTo + '</a> or call <a href="tel:+971521424500">+971 52 142 4500</a>.');
-          })
-          .then(function () { submit.disabled = false; });
-        return;
-      }
-
-      // No form backend configured: hand the enquiry to the visitor's email app.
-      var lines = [
-        'Full name: ' + d.name,
-        d.company ? 'Company: ' + d.company : null,
-        'Phone: ' + d.phone,
-        'Email: ' + d.email,
-        'Project type: ' + d.type,
-        'Project location: ' + d.location,
-        d.area ? 'Approximate project area: ' + d.area : null,
-        'Preferred contact method: ' + d.contact,
-        '',
-        'Project description:',
-        d.description
-      ].filter(function (l) { return l !== null; });
-      var subject = 'Project enquiry – ' + d.type + ' – ' + d.name;
-      var build = function (body) { return 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body); };
-      var href = build(lines.join('\n'));
-      var truncated = false;
-      // some desktop mail clients reject mailto links longer than ~2,000 characters
-      while (href.length > 1900 && lines[lines.length - 1].length > 40) {
-        truncated = true;
-        lines[lines.length - 1] = lines[lines.length - 1].slice(0, Math.floor(lines[lines.length - 1].length * 0.8)) + '…';
-        href = build(lines.concat(['', '(Description shortened — please paste the full text into this email.)']).join('\n'));
-      }
-      show('info', '<strong>Almost done.</strong> Your email app should open with this enquiry pre-filled — please press <em>Send</em> there to complete it.' + (truncated ? ' Your description was long, so it has been shortened in the email: please paste the full text before sending.' : '') + ' If nothing opened, email <a href="mailto:' + mailTo + '">' + mailTo + '</a> or call <a href="tel:+971521424500">+971 52 142 4500</a>.');
-      window.location.href = href;
+  /* ---------- Social links: placeholders until real profile URLs replace href="#" ---------- */
+  function setupSocial() {
+    document.querySelectorAll('a[data-social][href="#"]').forEach(function (a) {
+      a.setAttribute('aria-disabled', 'true');
+      a.addEventListener('click', function (e) { e.preventDefault(); });
     });
   }
 
@@ -345,7 +222,7 @@
     setupScrollSpy();
     setupFilters();
     setupLightbox();
-    setupForm();
+    setupSocial();
     var ready = function () { root.classList.add('is-ready'); };
     if (document.fonts && document.fonts.ready) {
       Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 700); })]).then(ready);
