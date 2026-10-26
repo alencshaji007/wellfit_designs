@@ -61,8 +61,8 @@ photo half (x 990–2048), because the left half carries baked-in step numbers a
 | `process/step-01-discover` … `step-06-handover` | Process / the six step banners (cropped) | Process – one per step |
 | `projects/<project>-*` | Projects / one folder per project | Projects cards + lightbox; Home featured rail (first image of each) |
 
-Projects: Smart Leaves, HOC Creative, Strada, Oriana Trading & Sons, INVA Investors, Eleonora Apartment (new card) and Richard Sanchez.
-Avery Davis Home had no images in the supply, so its card still shows the linen material texture behind "Project photography to follow".
+Projects: Smart Leaves, HOC Creative, Strada, Oriana Trading & Sons, INVA Investors, Eleonora Apartment and Richard Sanchez.
+Eleonora Apartment replaces the former Avery Davis Home card, which had no images (confirmed by the client).
 
 ### Supplied but not used
 
@@ -82,7 +82,7 @@ They keep their on-image "Illustrative render" label, and the footer explains wh
 | `interiors/interior-meeting-room` | About – Our Story |
 | `details/detail-joinery-workbench` | About – Our Strength |
 | `details/detail-oak-slat-wall` | Contact hero |
-| `materials/material-*` (marble, travertine, oak, linen, brushed brass) | Home – material swatches ("Illustrative material studies"); linen texture behind the pending Avery Davis card |
+| `materials/material-*` (marble, travertine, oak, linen, brushed brass) | Home – material swatches ("Illustrative material studies") |
 
 The earlier renders and the project photographs extracted from the company profile PDF were removed when the client images replaced them.
 

@@ -102,10 +102,10 @@ Text in the pages comes from the DOCX; keep any new copy factual.
 **Replacing an illustrative render with a real photograph**: swap the files, update the `alt`, and remove the
 `<span class="media-caption">Illustrative render</span>` label next to it.
 
-**Adding project photographs** for projects that show "Project photography to follow" (`pages/projects.html`):
+**Adding a project** (`pages/projects.html`, plus the featured rail in `index.html`):
 
-1. Replace the material texture in that card with the photograph.
-2. Add the gallery button markup used by the Smart Leave, HOC Creative and Strada cards. Its `data-gallery` JSON lists each photo's AVIF and WebP `srcset`, `alt`, `w`, `h` and `caption`.
+1. Copy an existing card and swap in the new photographs, name, location, category and description.
+2. Update the gallery button markup. Its `data-gallery` JSON lists each photo's AVIF and WebP `srcset`, `alt`, `w`, `h` and `caption`.
 
 ## Motion system
 
@@ -147,11 +147,11 @@ There is no backend, so it never claims an enquiry was "sent".
 
 Nothing below was invented on the site. Each item is either left out or flagged.
 
-1. **Residential project names.** "Avery Davis Home" (Arabian Ranches) and "Richard Sanchez" (DAMAC Hills) appear in the DOCX and the PDF. However, these names, like the PDF testimonial names, match placeholder names that design templates commonly use. Please confirm they are real clients and that you have permission to publish them, or rename or remove the two cards.
+1. **Residential project names.** "Richard Sanchez" (DAMAC Hills) appears in the DOCX and the PDF. However, the name, like the PDF testimonial names, matches placeholder names that design templates commonly use. Please confirm it is a real client and that you have permission to publish it, or rename or remove the card. (The former "Avery Davis Home" card has been replaced by Eleonora Apartment.)
 2. **Testimonials.** The PDF contains three testimonials (Helene Paquet, Jamie Chastain, Sebastian Bennett) with stock-style portraits, and the final DOCX does not include them. No testimonials are published. Supply genuine, approved testimonials to add a section.
-3. **Project photography.** The PDF's images for Oriana Trading & Sons, INVA Investors, Avery Davis Home and Richard Sanchez, and its cover, "who we are" and expertise pages, appear to be third-party or stock images. One carries an "EXS OFFICES" watermark, so none of them are used. Those four projects show "Project photography to follow".
-4. **Genuine photos used.** The Smart Leave, HOC Creative and Strada photographs from the PDF look like original site photos and are used for those projects only. Please confirm ownership, approval and the DOCX descriptions against the completed scope; the DOCX asks for this.
-5. **Client name.** The signage in the Smart Leave photograph reads "SMART LEAVES AGRICULTURAL LLC". The site uses the DOCX spelling, "Smart Leave", so please confirm which is correct.
+3. **PDF imagery.** The PDF's cover, "who we are" and expertise images appear to be third-party or stock images (one carries an "EXS OFFICES" watermark), so none of them are used. All project images now come from the client's October 2026 image supply.
+4. **Client-supplied images.** Please confirm the rights to every supplied image and check the DOCX project descriptions against the completed scope. If any project image is a visualisation rather than a photograph of the finished work, label it as such.
+5. **Eleonora Apartment location.** Not supplied, so the card shows "UAE". (Client name confirmed: "Smart Leaves".)
 6. **Project timelines.** The FAQ answer for project duration has no typical ranges; the DOCX placeholder asks for them.
 7. **Not provided, so not shown.** Street address or map, opening hours, trade licence number, social media profiles, WhatsApp number, team members, awards and certifications.
 8. **Claims softened per the DOCX.** The PDF also says "established in 2020", "5 years experience", "state-of-the-art production facility" and lists "Architecture" expertise. The DOCX deliberately words these differently: the journey began in 2020 with JAN Interior Fit Out, and Wellfit Designs was established in 2025. The DOCX wording is used throughout.
