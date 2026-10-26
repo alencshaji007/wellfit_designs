@@ -39,7 +39,10 @@ Each slot crops with `object-fit: cover`, so the `sizes` attributes allow for ho
 
 Resized and re-encoded only (same settings as `tools/renders/optimize.py`). The six process step banners were also cropped to their
 photo half (x 990–2048), because the left half carries baked-in step numbers and text that the page already shows as HTML.
-**Before publishing, confirm the client holds the rights to every image.** If any of the project images are visualisations rather than photographs of the completed work, label them as such.
+**Before publishing, confirm the client holds the rights to every image.**
+The project images are computer-generated, so (at the client's request) every project card carries a "Visualisation" label, their `alt` text
+starts with "Visualisation:", lightbox captions end in "(visualisation)", and the footer on every page explains the label.
+Remove all three for any image that is replaced with a photograph of the completed work.
 
 | File (base name) | Client folder / file | Used on |
 | --- | --- | --- |
