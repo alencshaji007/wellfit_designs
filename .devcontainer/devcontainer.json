@@ -1,0 +1,13 @@
+{
+  // GitHub Codespaces / VS Code dev container: serves the static site with Python on port 8080.
+  "name": "Wellfit Designs",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": { "label": "Website", "onAutoForward": "openBrowser" }
+  },
+  // starts the server each time you open the codespace; the "Ports" tab shows its address
+  "postAttachCommand": {
+    "server": "python3 -m http.server 8080"
+  }
+}

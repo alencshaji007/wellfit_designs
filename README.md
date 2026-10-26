@@ -57,6 +57,20 @@ python3 -m http.server 8080
 or `npx http-server -p 8080`. Opening `index.html` straight from disk (`file://`) also works.
 The 404 page and the web manifest expect to be served from a web root.
 
+### GitHub Codespaces
+
+On GitHub, open **Code → Codespaces → Create codespace on this branch**. The `.devcontainer/devcontainer.json` config
+starts `python3 -m http.server 8080` automatically and opens the site in a new tab. If the tab does not open, use the
+**Ports** panel and click the globe icon next to port 8080 ("Website").
+
+To start the server by hand (for example after stopping it), run this in the codespace terminal:
+
+```bash
+python3 -m http.server 8080
+```
+
+Changes to HTML, CSS or JS show up after a browser refresh; no restart is needed.
+
 ## Deployment
 
 Upload the folder as-is to any static host: Netlify, Vercel (static), Cloudflare Pages, GitHub Pages, S3 + CloudFront or shared hosting.
