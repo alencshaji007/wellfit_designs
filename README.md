@@ -41,7 +41,7 @@ js/navigation.js       header states, accessible mobile menu, anchors, page curt
 js/main.js             boot, back-to-top, FAQ, project filters, lightbox, enquiry form
 assets/fonts/          self-hosted WOFF2 fonts + OFL.txt
 assets/logo/           original logo, transparent logo, mark, favicons
-assets/images/         hero/, interiors/, details/, materials/, projects/  (AVIF + WebP, responsive widths)
+assets/images/         home/, services/, process/, projects/ (client images); hero/, interiors/, details/, materials/ (renders)  (AVIF + WebP, responsive widths)
 tools/renders/         Blender scripts that produced the illustrative renders (see ASSET-MANIFEST.md)
 ```
 
@@ -143,7 +143,7 @@ Nothing below was invented on the site. Each item is either left out or flagged.
 8. **Claims softened per the DOCX.** The PDF also says "established in 2020", "5 years experience", "state-of-the-art production facility" and lists "Architecture" expertise. The DOCX deliberately words these differently: the journey began in 2020 with JAN Interior Fit Out, and Wellfit Designs was established in 2025. The DOCX wording is used throughout.
 9. **Form backend.** None is configured; see *Enquiry form* above.
 10. **Analytics and cookie consent.** Not included. Add them if required, and update the privacy wording accordingly.
-11. **Illustrative renders.** All interior, exterior, detail and material images are original renders created for this site and are labelled "Illustrative render". Replace them with professional photography of completed Wellfit projects when available.
+11. **Illustrative renders.** The Home, Services, Process and Projects images are client-supplied. The About and Contact images and the material swatches are still original renders labelled "Illustrative render"; replace them when client images are available.
 
 ## Browser support
 

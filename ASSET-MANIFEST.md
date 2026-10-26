@@ -2,7 +2,7 @@
 
 Every asset shipped with the site is listed here, with its provenance. Provenance falls into three types:
 
-- **Client-supplied**: the logo, plus project photographs extracted from the company profile PDF.
+- **Client-supplied**: the logo, and the page and project images the client supplied in October 2026 (five zip folders: First page, Introduction, Our Services, Process, Projects).
 - **Original render**: created for this project with the procedural Blender scripts in `tools/renders/`.
 - **Open-licence font**: the self-hosted fonts.
 
@@ -32,67 +32,59 @@ No asset is presented as something it is not:
 ## Images — `assets/images/`
 
 Every image is delivered as **AVIF and WebP** at several widths (`name-<width>.avif|webp`). The pages serve them through
-`<picture>`/`srcset`, with intrinsic `width`/`height` attributes and lazy loading below the fold; the hero is preloaded with `fetchpriority="high"`.
+`<picture>`/`srcset`, with intrinsic `width`/`height` attributes and lazy loading below the fold; the first hero image is preloaded with `fetchpriority="high"`.
+Each slot crops with `object-fit: cover`, so the `sizes` attributes allow for how much of each image's width a slot actually shows.
 
-### Original renders (illustrative; not client projects)
+### Client-supplied images
 
-How they were made:
+Resized and re-encoded only (same settings as `tools/renders/optimize.py`). The six process step banners were also cropped to their
+photo half (x 990–2048), because the left half carries baked-in step numbers and text that the page already shows as HTML.
+**Before publishing, confirm the client holds the rights to every image.** If any of the project images are visualisations rather than photographs of the completed work, label them as such.
 
-- Modelled procedurally, lit with a physically based sky and sun, and path-traced in **Blender 5.2 (Cycles, CPU)**, denoised with OpenImageDenoise and tone-mapped with AgX.
-- Source: `tools/renders/scenes.py` and `tools/renders/wf_kit.py`.
-- The colour palette follows the brand tokens: sand, linen, ink, navy and terracotta, with oak, travertine and brass accents.
+| File (base name) | Client folder / file | Used on |
+| --- | --- | --- |
+| `home/hero-office-reception-lounge` | First page / Landing page / 1 | Home hero (slide 1); Open Graph image `hero/og-wellfit-designs.jpg` (1200 × 630 crop) |
+| `home/hero-conference-room` | First page / Landing page / Modern Conference Room with City Views | Home hero (slide 2) |
+| `home/hero-office-collage` | First page / Landing page / Modern Corporate Office Interior Collage | Home hero (slide 3) |
+| `home/intro-living-room` | Introduction / Warm Minimalist Scandinavian Living Room | Home – Introduction (main) |
+| `home/intro-living-vignette` | Introduction / Cozy Cream Living Room Vignette | Home – Introduction (inset) |
+| `home/serve-corporate-office` | First page / Who We Serve / Corporate office | Home – Who We Serve (Corporate Offices) |
+| `home/serve-villa-bedroom` | First page / Who We Serve / Villa (2) | Home – Who We Serve (Villas) |
+| `home/serve-apartment-living` | First page / Who We Serve / Apartments | Home – Who We Serve (Apartments) |
+| `home/serve-warehouse-office` | First page / Who We Serve / Warehouse Racks | Home – Who We Serve (Warehouses) |
+| `home/why-galley-kitchen` | First page / Why Wellfit Designs | Home – Why Wellfit |
+| `home/materials-kitchen-joinery` | First page / Materials & Craftsmanship | Home – Materials & Craftsmanship |
+| `home/cta-living-room` | First page / Let’s Create a Space That Works for You | Closing call-to-action band (Home, About, Services, Process, Contact) |
+| `services/services-hero-media-wall` | Our Services / Complete Interior Solutions, All in One Place | Services hero |
+| `services/service-01-design-planning` … `service-08-turnkey` | Our Services / Services list / 1–8 | Services – one per service block, in order; Home services hover preview |
+| `process/process-hero-corridor` | Process / Our Process | Process hero |
+| `process/step-01-discover` … `step-06-handover` | Process / the six step banners (cropped) | Process – one per step |
+| `projects/<project>-*` | Projects / one folder per project | Projects cards + lightbox; Home featured rail (first image of each) |
 
-| File (base name) | Size | Used on | Content |
-| --- | --- | --- | --- |
-| `hero/hero-arched-living-room` | 1920 × 1080 | Home hero (arch window); Open Graph image `hero/og-wellfit-designs.jpg` (1200 × 630 crop) | Villa living room, plaster arch to a courtyard with olive tree, oak slats |
-| `hero/exterior-villa-dusk` | 1920 × 1080 | Closing call-to-action band (Home, About, Services, Process, Contact) | Contemporary villa at dusk with lit pool |
-| `interiors/interior-villa-living-room` | 1440 × 960 | Home – Who We Serve (Villas & Residential) | Living room with full-height glazing to a pool terrace |
-| `interiors/interior-villa-kitchen` | 1440 × 960 | Home – Introduction | Kitchen with oak cabinetry, marble island, navy tall units |
-| `interiors/interior-villa-bedroom` | 1080 × 1350 | Services – Residential; Home services preview | Bedroom with upholstered panel wall |
-| `interiors/interior-villa-dining` | 1080 × 1350 | Process hero; Services – Turnkey; Home services preview | Dining room, oak table, paper lantern, arched niche |
-| `interiors/interior-villa-bathroom` | 1080 × 1350 | Services hero | Travertine bathroom, freestanding tub, arched mirror |
-| `interiors/interior-villa-staircase` | 1080 × 1350 | About hero | Double-height stair hall with cantilevered oak treads |
-| `interiors/interior-apartment-living` | 1440 × 960 | Home – Who We Serve (Apartments) | Apartment living room with skyline view |
-| `interiors/interior-office-reception` | 1440 × 960 | Services – Commercial Fit-Out; Home services preview | Office reception, travertine counter, oak slat wall |
-| `interiors/interior-office-workspace` | 1440 × 960 | Home – Who We Serve (Corporate Offices) | Open-plan workspace with acoustic baffles |
-| `interiors/interior-meeting-room` | 1440 × 960 | About – Our Story; Services – Approvals & PM; Home services preview | Meeting room with glass partition and slat wall |
-| `interiors/interior-warehouse-facility` | 1440 × 960 | Home – Who We Serve (Warehouses & Commercial) | Warehouse with racking and two-storey office pod |
-| `details/detail-oak-slat-wall` | 1080 × 1350 | Home – Materials & Craftsmanship; Contact hero | Oak slat wall with light line and terracotta bench |
-| `details/detail-custom-wardrobe` | 1080 × 1350 | Home – Introduction (inset); Services – Joinery; Home services preview | Fluted-oak wardrobe with lit interior |
-| `details/detail-ceiling-cove-lighting` | 1440 × 960 | Home – Why Wellfit; Services – Finishes; Home services preview | Layered ceiling with cove lighting |
-| `details/detail-joinery-workbench` | 1440 × 960 | About – Our Strength; Process – Coordinate | Joinery bench with oak door panel and tools (no real facility shown) |
-| `details/process-design-desk` | 1440 × 960 | Services – Interior Design; Process – Design; Home services preview | Top-down desk with an original, text-free floor plan and material samples |
-| `details/process-site-fit-out` | 1440 × 960 | Services – MEP; Process – Execute; Home services preview | Fit-out site with stud framing, ceiling grid, laser level |
-| `materials/material-calacatta-marble` | 1024 × 1024 | Home – material swatch; texture for the Richard Sanchez card | Marble close-up |
-| `materials/material-travertine` | 1024 × 1024 | Home – material swatch; texture for the INVA Investors card | Travertine close-up |
-| `materials/material-oak` | 1024 × 1024 | Home – material swatch; texture for the Oriana Trading & Sons card | Oak close-up |
-| `materials/material-linen` | 1024 × 1024 | Home – material swatch; texture for the Avery Davis Home card | Linen close-up |
-| `materials/material-brushed-brass` | 1024 × 1024 | Home – material swatch | Brushed brass close-up |
+Projects: Smart Leaves, HOC Creative, Strada, Oriana Trading & Sons, INVA Investors, Eleonora Apartment (new card) and Richard Sanchez.
+Avery Davis Home had no images in the supply, so its card still shows the linen material texture behind "Project photography to follow".
 
-On the project cards without photography, the material textures are decorative (`alt=""`, `aria-hidden`). They sit behind the label
-"Project photography to follow", so they are never presented as images of those projects.
+### Supplied but not used
 
-### Client project photographs — `assets/images/projects/`
-
-These were extracted from *WELLFIT_DESIGNS_COMPANY_PROFILE.pdf* at their embedded resolution, then resized and re-encoded only.
-They appear to be original site photographs of completed work. **Before publishing, confirm ownership, client approval and usage rights.**
-
-| File (base name) | Native size | PDF page | Used on |
-| --- | --- | --- | --- |
-| `project-smart-leave-reception` | 1261 × 1472 | 10 | Home featured rail; Projects card + lightbox |
-| `project-smart-leave-meeting-room` | 589 × 591 | 10 | Projects lightbox |
-| `project-hoc-creative-studio` | 1262 × 1472 | 11 | Home featured rail; Projects card + lightbox |
-| `project-hoc-creative-storage-wall` | 590 × 589 | 11 | Projects lightbox |
-| `project-strada-meeting-room` | 1350 × 1577 | 12 | Home featured rail; Projects card + lightbox |
-| `project-strada-workspace` | 590 × 589 | 12 | Projects lightbox |
-
-### Supplied material that was intentionally **not** used
-
-| Source | Reason |
+| File | Reason |
 | --- | --- |
-| PDF images for Oriana Trading & Sons, INVA Investors, Avery Davis Home and Richard Sanchez, and the cover, "Who we are", "Company history" and "Our expertise" pages | Appear to be third-party, published or stock imagery; one carries an "EXS OFFICES" watermark. Using them could breach copyright and misrepresent the work. |
-| PDF testimonial portraits and quotes | Stock-style portraits and template-style names; the final DOCX omits testimonials |
-| Moodboard image supplied with the brief (another brand) | Used only as a mood reference; none of its imagery, branding or layout was copied |
+| First page / Who We Serve / Villa (1) | Very wide (1870 × 841); the Who We Serve arches are portrait, so Villa (2) was used |
+| Introduction / Warm Minimalist Living Room with Textured Decor | The Introduction has two image slots; this is the same room as the main image |
+
+### Original renders still in use (illustrative; not client projects)
+
+How they were made: modelled procedurally and path-traced in **Blender 5.2 (Cycles)**; source in `tools/renders/scenes.py` and `tools/renders/wf_kit.py`.
+They keep their on-image "Illustrative render" label, and the footer explains what that label means.
+
+| File (base name) | Used on |
+| --- | --- |
+| `interiors/interior-villa-staircase` | About hero |
+| `interiors/interior-meeting-room` | About – Our Story |
+| `details/detail-joinery-workbench` | About – Our Strength |
+| `details/detail-oak-slat-wall` | Contact hero |
+| `materials/material-*` (marble, travertine, oak, linen, brushed brass) | Home – material swatches ("Illustrative material studies"); linen texture behind the pending Avery Davis card |
+
+The earlier renders and the project photographs extracted from the company profile PDF were removed when the client images replaced them.
 
 ## Generated text-free drawing
 
