@@ -2,7 +2,7 @@
 
 Every asset shipped with the site is listed here, with its provenance. Provenance falls into three types:
 
-- **Client-supplied**: the logo, and the page and project images the client supplied in October 2026 (five zip folders: First page, Introduction, Our Services, Process, Projects).
+- **Client-supplied**: the logo, and the page and project images the client supplied in October 2026 (five zip folders: First page, Introduction, Our Services, Process, Projects), plus a Home folder and a Fatima majlis project folder supplied later.
 - **Original render**: created for this project with the procedural Blender scripts in `tools/renders/`.
 - **Open-licence font**: the self-hosted fonts.
 
@@ -62,9 +62,13 @@ Remove all three for any image that is replaced with a photograph of the complet
 | `services/service-01-design-planning` … `service-08-turnkey` | Our Services / Services list / 1–8 | Services – one per service block, in order; Home services hover preview |
 | `process/process-hero-corridor` | Process / Our Process | Process hero |
 | `process/step-01-discover` … `step-06-handover` | Process / the six step banners (cropped) | Process – one per step |
+| `about/about-bedside-detail` | Home / About us | About hero |
+| `about/about-story-boardroom` | Home / Our story1 | About – Our Story |
+| `about/about-strength-living` | Home / Our Strength | About – Our Strength |
 | `projects/<project>-*` | Projects / one folder per project | Projects cards + lightbox; Home featured rail (first image of each) |
 
-Projects: Smart Leaves, HOC Creative, Strada, Oriana Trading & Sons, INVA Investors, Eleonora Apartment and Richard Sanchez.
+Projects: Smart Leaves, HOC Creative, Strada, Oriana Trading & Sons, INVA Investors, Eleonora Apartment, Richard Sanchez and Fatima Majlis.
+Fatima Majlis uses `fatima-majlis-lounge` (Serene Modern Majlis Lounge) and `fatima-majlis-exterior` (Modern House with Tree-Lined Terrace).
 Eleonora Apartment replaces the former Avery Davis Home card, which had no images (confirmed by the client).
 
 ### Company profile brochure
@@ -76,7 +80,7 @@ Eleonora Apartment replaces the former Avery Davis Home card, which had no image
 
 ### Social icons
 
-The WhatsApp, Instagram, Facebook and LinkedIn glyphs are inline SVG paths from Bootstrap Icons 1.11.3 (MIT licence).
+The WhatsApp, Instagram, Facebook, LinkedIn and YouTube glyphs are inline SVG paths from Bootstrap Icons 1.11.3 (MIT licence).
 
 ### Supplied but not used
 
@@ -92,9 +96,6 @@ They keep their on-image "Illustrative render" label, and the footer explains wh
 
 | File (base name) | Used on |
 | --- | --- |
-| `interiors/interior-villa-staircase` | About hero |
-| `interiors/interior-meeting-room` | About – Our Story |
-| `details/detail-joinery-workbench` | About – Our Strength |
 | `details/detail-oak-slat-wall` | Contact hero |
 | `materials/material-*` (marble, travertine, oak, linen, brushed brass) | Home – material swatches ("Illustrative material studies") |
 
