@@ -38,7 +38,7 @@ css/animations.css     reveal states, keyframes, reduced-motion overrides
 css/responsive.css     breakpoints 1280 / 1100 / 1024 / 820 / 600 / 380
 js/animations.js       motion engine: smooth scroll, scroll loop, reveals, parallax, hero, rail, marquee
 js/navigation.js       header states, accessible mobile menu, anchors, page curtain transitions
-js/main.js             boot, back-to-top, FAQ, project filters, lightbox, social-link placeholders (WhatsApp)
+js/main.js             boot, back-to-top, FAQ, project filters, lightbox, social-link placeholders
 assets/fonts/          self-hosted WOFF2 fonts + OFL.txt
 assets/logo/           original logo, transparent logo, mark, favicons
 assets/brochure/       company profile PDF (downloadable)
@@ -143,16 +143,17 @@ links open in a new tab:
 
 | Network | URL |
 | --- | --- |
+| WhatsApp | `https://wa.me/971554181156` |
 | Instagram | `https://www.instagram.com/wellfit_designs_/` |
 | Facebook | `https://www.facebook.com/share/1LdYV6WJf3/` |
 | LinkedIn | `https://www.linkedin.com/company/wellfitdesigns/` |
 | YouTube | `https://www.youtube.com/@Wellfitdesigns` |
 
-WhatsApp has no URL yet, so it stays `href="#"`; `js/main.js` marks such links as disabled (`aria-disabled="true"`) and
-stops them jumping to the top of the page. To change a profile, search the HTML files for `data-social="instagram"`
+Any icon left as `href="#"` is marked disabled by `js/main.js` (`aria-disabled="true"`) and does not jump to the top of
+the page. To change a profile, search the HTML files for `data-social="instagram"`
 (or `whatsapp`, `facebook`, `linkedin`, `youtube`) and replace the `href`. Each icon appears twice on `pages/contact.html` and
-once on every other page (`index.html`, `404.html` and the files in `pages/`). For WhatsApp use `https://wa.me/971XXXXXXXXX`
-(country code and number, no `+` or spaces) and add `target="_blank" rel="noopener noreferrer"` like the other profiles.
+once on every other page (`index.html`, `404.html` and the files in `pages/`). WhatsApp links use `https://wa.me/` followed by
+the country code and number, with no `+` or spaces.
 
 ## Company profile brochure
 
@@ -172,9 +173,9 @@ Nothing below was invented on the site. Each item is either left out or flagged.
 4. **Client-supplied images.** Please confirm the rights to every supplied image and check the DOCX project descriptions against the completed scope. The project images are computer-generated and are labelled "Visualisation" (on-image label, `alt` text, lightbox caption and footer note); remove the label from any image replaced by a real photograph.
 5. **Eleonora Apartment and Fatima Majlis locations.** Not supplied, so the cards show "UAE". The Fatima Majlis description was written from its two images; please confirm it. (Client name confirmed: "Smart Leaves".)
 6. **Project timelines.** The FAQ answer for project duration has no typical ranges; the DOCX placeholder asks for them.
-7. **Not provided, so not shown.** Street address or map, opening hours, trade licence number, WhatsApp number, team members, awards and certifications.
+7. **Not provided, so not shown.** Street address or map, opening hours, trade licence number, team members, awards and certifications.
 8. **Claims softened per the DOCX.** The PDF also says "established in 2020", "5 years experience", "state-of-the-art production facility" and lists "Architecture" expertise. The DOCX deliberately words these differently: the journey began in 2020 with JAN Interior Fit Out, and Wellfit Designs was established in 2025. The DOCX wording is used throughout.
-9. **Social media links.** Instagram, Facebook, LinkedIn and YouTube are live; the WhatsApp icon is a placeholder until a WhatsApp number is confirmed. See *Social media links* above.
+9. **Social media links.** WhatsApp, Instagram, Facebook, LinkedIn and YouTube are all live. See *Social media links* above.
 10. **Analytics and cookie consent.** Not included. Add them if required, and update the privacy wording accordingly.
 11. **Illustrative renders.** The Home, About, Services, Process and Projects images are client-supplied. The Contact image and the material swatches are still original renders labelled "Illustrative render"; replace them when client images are available.
 
